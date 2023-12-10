@@ -1,0 +1,78 @@
+pipeline{
+    agent any
+    tools{
+        maven 'Maven'
+    }
+    parameters {
+        choice(name: 'DEPLOY_ENV', choices: ['TEST', 'Production', 'UAT'], description: 'Select the deployment environment')
+    }
+    environment{
+        SCM='https://github.com/ehicode/maven-web-app.git'
+    }
+    stages{
+        stage('Git Clone'){
+            steps{
+                echo "Cloning from git repository"
+                git "${SCM}"
+                echo "Cloning complete"
+            }
+        }
+        stage('Build App'){
+            steps{
+                script{
+                    if (params.DEPLOY_ENV == 'Sandbox'){
+                        echo "Building in ${DEPLOY_ENV} environment"
+                        sh 'mvn package'
+                        echo "build completed"
+                    }
+                    else{
+                        echo 'This is Production Environment'
+                        sh 'mvn clean'
+                        error 'Build aborted'
+                    }
+                }
+            }
+        }
+        stage('Testing App'){
+            steps{
+                echo 'Application testing is in progress'
+                sh 'mvn sonar:sonar'
+                echo "Testing completed in the ${DEPLOY_ENV}"
+            }
+        }
+        stage('Deploy to Nexus'){
+            steps{
+                echo "Deploying to Nexus"
+                timeout(time: 3, unit: 'MINUTES'){
+                    emailext body: 'Login to approve build', subject: 'Approve Build', to: 'stevekinsltd@gmail.com'
+                    input message: 'Approval needed to continue deployment'
+                }
+                sh 'mvn deploy'
+                echo "Nexus deployment completed"
+            }
+        }
+        stage('Deploying to Tomcat'){
+            steps{
+                echo 'Depoying application to Tomcat'
+                deploy adapters: [tomcat9(credentialsId: '123', path: '', url: 'http://3.134.90.173:7000/')], contextPath: null, war: 'target/*war'
+            }
+        }
+    }
+    post{
+        always{
+            echo 'The pipeline process has been completed'
+        }
+        success{
+            echo " The build was successful"
+            emailext body: 'The build was completed sucessfully. Please login to view', subject: 'Build Status', to: 'stevekinsltd@gmail.com'
+        }
+        failure{
+            echo "The build failed."
+            emailext body: 'The build failed. Please log in to view the report', subject: 'Build Status', to: 'stevekinsltd@gmail.com'
+        }
+        aborted{
+            echo 'The script has been aborted'
+            emailext body: 'The script was aborted', subject: 'Build Status', to:'stevekinsltd@gmail.com'
+        }
+    }
+}
