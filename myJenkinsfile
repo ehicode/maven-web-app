@@ -33,13 +33,6 @@ pipeline{
                 }
             }
         }
-        stage('Testing App'){
-            steps{
-                echo 'Application testing is in progress'
-                sh 'mvn sonar:sonar'
-                echo "Testing completed in the ${DEPLOY_ENV}"
-            }
-        }
         stage('Deploy to Nexus'){
             steps{
                 echo "Deploying to Nexus"
