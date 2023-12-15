@@ -1,3 +1,5 @@
+BIN_DIRS= bin
+TEST_DIR= test
 name = Steve
 class := 10
 name += Jobs
@@ -9,8 +11,8 @@ endef
 
 targetName3:
 	@echo "Welcome to the world of makefiles $(name)"
-	@rm -rf $(Test_DIR)
-	@rm -rf $(BIN_DIR)
+	@rm -rf $(TEST_DIR)
+	@rm -rf $(BIN_DIRS)
 	$(call functione)
 
 targetName4: targetName3
