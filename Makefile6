@@ -1,0 +1,22 @@
+BIN_DIR = bin
+Src_DIR = src
+Test_DIR = test
+name= Steve
+class:= 10
+name+= Jobs 
+GIT_URL= 'https://github.com/ehicode/maven-web-app.git'
+all: build
+
+targetName1:
+	@echo "Hello World"
+	@mkdir -p $(BIN_DIR)
+	@echo 'Directory created'
+	@echo "Hello World"
+
+targetName2: targetName1 
+	@echo "Welcome to the world of makefiles $(name)"
+	@mkdir -p $(Test_DIR)
+
+clean:
+  @echo "Building from SCM"
+  @rm -rf $(BIN_DIR)
