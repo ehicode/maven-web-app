@@ -1,10 +1,15 @@
 BIN_DIR = bin
+
 Src_DIR = src
+
 Test_DIR = test
+
 name= Steve
+
 class:= 10
+
 name+= Jobs 
-GIT_URL= 'https://github.com/ehicode/maven-web-app.git'
+
 all: build
 
 targetName1:
