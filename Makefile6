@@ -1,14 +1,9 @@
 BIN_DIR = bin
-
 Src_DIR = src
-
 Test_DIR = test
-
-name= Steve
-
-class:= 10
-
-name+= Jobs 
+name = Steve
+class := 10
+name += Jobs
 
 all: build
 
@@ -18,10 +13,10 @@ targetName1:
 	@echo 'Directory created'
 	@echo "Hello World"
 
-targetName2: targetName1 
+targetName2: targetName1
 	@echo "Welcome to the world of makefiles $(name)"
 	@mkdir -p $(Test_DIR)
 
 clean:
-  	@echo "Building from SCM"
-  	@rm -rf $(BIN_DIR)
+	@echo "Building from SCM"
+	@rm -rf $(BIN_DIR)
