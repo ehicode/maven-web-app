@@ -1,0 +1,17 @@
+name = Steve
+class := 10
+name += Jobs
+define functione
+	@echo "Hello World"
+	@mkdir -p junk
+	@echo "Directory created"
+endef
+
+targetName3:
+	@echo "Welcome to the world of makefiles $(name)"
+	@rm -rf $(Test_DIR)
+	@rm -rf $(BIN_DIR)
+	$(call functione)
+
+targetName4: targetName3
+	@echo "Job done"
