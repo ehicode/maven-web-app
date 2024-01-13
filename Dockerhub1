@@ -1,0 +1,4 @@
+FROM tomcat:7.0.70-alpine
+WORKDIR /usr/local/tomcat/webapps
+COPY target/*war  .
+
